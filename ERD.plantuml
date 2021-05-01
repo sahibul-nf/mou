@@ -1,0 +1,24 @@
+@startuml ERD
+    entity Users {
+        *id : int
+        ----
+        name : string
+    }
+
+    entity Campaigns {
+
+    }
+
+    entity CampaignImages {
+
+    }
+
+    entity Transactions {
+
+    }
+
+Users ||--o{ Campaigns : Create
+Campaigns ||--|{ CampaignImages : Has
+Users ||--o{ Transactions : Has
+Transaction }o--|| Campaigns : Has
+@enduml
