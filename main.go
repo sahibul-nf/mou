@@ -1,10 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"log"
+	"mou/handler"
 	"mou/user"
 
+	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -12,32 +13,20 @@ import (
 func main() {
 	// membuat koneksi ke db mysql
 	// refer https://github.com/go-sql-driver/mysql#dsn-data-source-name for details
-	dsn := "uSNF:uSNF@tcp(127.0.0.1:3306)/my_dictionary?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "uSNF:uSNF@tcp(127.0.0.1:3306)/moyu?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	fmt.Println("Connection to db is good :)")
+	userRepository := user.NewRepository(db)
+	userService := user.NewService(userRepository)
+	userHandler := handler.NewUserHandler(userService)
 
-	var tb_user []user.User
-	length := len(tb_user)
+	router := gin.Default()
+	api := router.Group("/api/v1")
 
-	fmt.Println(length)
-
-	db.Table("tb_user").Select("password", "email").Scan(&tb_user)
-
-	length = len(tb_user)
-	fmt.Println(length)
-
-	for _, user := range tb_user {
-		fmt.Println(user.Email)
-		fmt.Println(user.Password)
-		fmt.Println()
-	}
-
-	// result := map[string]interface{}{}
-	// a := db.Table("tb_user").Take(&result)
-	// fmt.Println(a)
+	api.POST("/users", userHandler.RegisterUser)
+	router.Run()
 }
