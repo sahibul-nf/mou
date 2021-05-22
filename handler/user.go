@@ -86,4 +86,44 @@ func (h *userHandler) LoginUser(c *gin.Context) {
 }
 
 // TODO: Check available email
+func (h *userHandler) CheckEmailAvaibility(c *gin.Context) {
+
+	var input user.CheckEmailInput
+
+	err := c.ShouldBindJSON(&input)
+
+	if err != nil {
+		errorFormatter := helper.ErrorValidationFormat(err)
+
+		errorMessage := gin.H{"errors": errorFormatter}
+
+		response := helper.APIResponse("Email checking failed", "error", http.StatusUnprocessableEntity, errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	isEmailAvailable, err := h.userService.IsEmailAvailable(input)
+
+	if err != nil {
+		errorMessage := gin.H{"errors": "Server error"}
+
+		response := helper.APIResponse("Email checking failed", "error", http.StatusUnprocessableEntity, errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	data := gin.H{
+		"is_available": isEmailAvailable,
+	}
+
+	metaMessage := "Email has been registered"
+
+	if isEmailAvailable {
+		metaMessage = "Email is available"
+	}
+
+	response := helper.APIResponse(metaMessage, "success", http.StatusOK, data)
+	c.JSON(http.StatusOK, response)
+}
+
 // TODO: Upload Avatar
