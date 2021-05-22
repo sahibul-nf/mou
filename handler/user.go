@@ -8,11 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// endpoint register
-// endpoint available email
-// endpoint login
-// endpoint upload
-// TODO: endpoint "/users"
 type userHandler struct {
 	userService user.Service
 }
@@ -21,6 +16,7 @@ func NewUserHandler(s user.Service) *userHandler {
 	return &userHandler{s}
 }
 
+// TODO: Register
 func (h *userHandler) RegisterUser(c *gin.Context) {
 
 	// tangkap input dari user
@@ -56,3 +52,38 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 
 	c.JSON(http.StatusOK, response)
 }
+
+// TODO: Login
+func (h *userHandler) LoginUser(c *gin.Context) {
+	var input user.LoginUserInput
+
+	err := c.ShouldBindJSON(&input)
+
+	if err != nil {
+		errorFormatter := helper.ErrorValidationFormat(err)
+
+		errorMessage := gin.H{"errors": errorFormatter}
+
+		response := helper.APIResponse("Login failed", "error", http.StatusUnprocessableEntity, errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	loggedInUser, err := h.userService.LoginUser(input)
+
+	if err != nil {
+		errorMessage := gin.H{"errors": err.Error()}
+
+		response := helper.APIResponse("Login failed", "error", http.StatusUnprocessableEntity, errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	userFormatter := user.FormatUser(loggedInUser, "abcc")
+	response := helper.APIResponse("Successfuly loggedin", "success", http.StatusOK, userFormatter)
+
+	c.JSON(http.StatusOK, response)
+}
+
+// TODO: Check available email
+// TODO: Upload Avatar

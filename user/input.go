@@ -6,3 +6,8 @@ type RegisterUserInput struct {
 	Occupation   string `json:"occupation" binding:"required"`
 	PasswordHash string `json:"password" binding:"required"`
 }
+
+type LoginUserInput struct {
+	Email        string `json:"email" binding:"required,email"`
+	PasswordHash string `json:"password" binding:"required"`
+}
