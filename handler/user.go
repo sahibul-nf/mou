@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"mou/helper"
 	"mou/user"
 	"net/http"
@@ -18,7 +19,6 @@ func NewUserHandler(s user.Service) *userHandler {
 
 // TODO: Register
 func (h *userHandler) RegisterUser(c *gin.Context) {
-
 	// tangkap input dari user
 	// map input dari user ke struct RegisterUserInput
 	var input user.RegisterUserInput
@@ -87,11 +87,11 @@ func (h *userHandler) LoginUser(c *gin.Context) {
 
 // TODO: Check available email
 func (h *userHandler) CheckEmailAvaibility(c *gin.Context) {
-
+	// tangkap input dari user
+	// dan mapping ke struct CheckEmailInput
 	var input user.CheckEmailInput
 
 	err := c.ShouldBindJSON(&input)
-
 	if err != nil {
 		errorFormatter := helper.ErrorValidationFormat(err)
 
@@ -102,8 +102,8 @@ func (h *userHandler) CheckEmailAvaibility(c *gin.Context) {
 		return
 	}
 
+	// user input passing ke service
 	isEmailAvailable, err := h.userService.IsEmailAvailable(input)
-
 	if err != nil {
 		errorMessage := gin.H{"errors": "Server error"}
 
@@ -112,6 +112,7 @@ func (h *userHandler) CheckEmailAvaibility(c *gin.Context) {
 		return
 	}
 
+	// response check email available success
 	data := gin.H{
 		"is_available": isEmailAvailable,
 	}
@@ -127,3 +128,55 @@ func (h *userHandler) CheckEmailAvaibility(c *gin.Context) {
 }
 
 // TODO: Upload Avatar
+func (h *userHandler) UploadAvatar(c *gin.Context) {
+	// tangkap nput dari user
+	file, err := c.FormFile("avatar")
+	if err != nil {
+		data := gin.H{
+			"is_uploaded": false,
+		}
+
+		response := helper.APIResponse("Failed to upload avatar image", "error", http.StatusBadRequest, data)
+
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// JWT (sementara hardcode, seakan2 user yang login ID = 1)
+	userID := 16
+
+	// simpan avatar di folder "images/"
+	path := fmt.Sprintf("images/%d-%s", userID, file.Filename)
+
+	err = c.SaveUploadedFile(file, path)
+	if err != nil {
+		data := gin.H{
+			"is_uploaded": false,
+		}
+
+		response := helper.APIResponse("Failed to upload avatar image", "error", http.StatusBadRequest, data)
+
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// di service kita call repo
+	// repo ambil data user yg ID = 1
+	// repo update data user simpan lokasi file ke db
+	_, err = h.userService.SaveAvatar(userID, path)
+	if err != nil {
+		data := gin.H{
+			"is_uploaded": false,
+		}
+
+		response := helper.APIResponse("Failed to upload avatar image", "error", http.StatusBadRequest, data)
+
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	data := gin.H{"is_uploaded": true}
+	response := helper.APIResponse("Avatar successfuly uploaded", "success", http.StatusOK, data)
+
+	c.JSON(http.StatusOK, response)
+}

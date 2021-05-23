@@ -47,4 +47,3 @@
 // 	// db.Table("users").Select("password_hash", "email", "created_at").Scan(&users)
 
 // 	c.JSON(http.StatusOK, users)
-// }
