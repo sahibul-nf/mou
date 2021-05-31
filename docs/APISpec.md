@@ -1,6 +1,6 @@
 # API Spec
 
-## Create User
+## Create New User (Register)
 
 Request 🔥
 
@@ -29,21 +29,16 @@ Response 🚀
 ```json
 {
   "meta": {
-    "message": "string",
-    "code": "int",
-    "status": "string"
+    "message": "Account has been registered",
+    "code": 200,
+    "status": "success"
   },
   "data": {
-    "ID": 1,
-    "Name": "Postman",
-    "Occupation": "Superman",
-    "Email": "",
-    "PasswordHash": "$2a$04$NmvjRdE1SoGpZAXyQ7uipOpBnPJgLQw/cCxq9pXby2XLPI6L6SCCi",
-    "AvatarFileName": "",
-    "Role": "user",
-    "Token": "",
-    "CreatedAt": "2021-05-05T20:52:22.672+07:00",
-    "UpdatedAt": "2021-05-05T20:52:22.672+07:00"
+    "id": 5,
+    "name": "Arini Qisty Adila",
+    "occuputaion": "Bussiness Syariah",
+    "email": "ariniqa@gmail.com",
+    "token": "abc"
   }
 }
 ```

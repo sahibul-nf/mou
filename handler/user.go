@@ -2,8 +2,9 @@ package handler
 
 import (
 	"fmt"
-	"mou/helper"
-	"mou/user"
+	"moyu/auth"
+	"moyu/helper"
+	"moyu/user"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,10 +12,11 @@ import (
 
 type userHandler struct {
 	userService user.Service
+	authService auth.Service
 }
 
-func NewUserHandler(s user.Service) *userHandler {
-	return &userHandler{s}
+func NewUserHandler(userService user.Service, authService auth.Service) *userHandler {
+	return &userHandler{userService, authService}
 }
 
 // TODO: Register
@@ -46,8 +48,15 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 	}
 
 	// token, err := h.jwtService.GenerateToken()
+	token, err := h.authService.GenerateToken(newUser.ID)
 
-	userFormatter := user.FormatUser(newUser, "abc")
+	if err != nil {
+		response := helper.APIResponse("Register account failed", "error", http.StatusBadRequest, nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	userFormatter := user.FormatUser(newUser, token)
 	response := helper.APIResponse("Account has been registered", "success", http.StatusOK, userFormatter)
 
 	c.JSON(http.StatusOK, response)
@@ -79,7 +88,17 @@ func (h *userHandler) LoginUser(c *gin.Context) {
 		return
 	}
 
-	userFormatter := user.FormatUser(loggedInUser, "abcc")
+	token, err := h.authService.GenerateToken(loggedInUser.ID)
+
+	if err != nil {
+		errorMessage := gin.H{"errors": err.Error()}
+
+		response := helper.APIResponse("Login failed", "error", http.StatusUnprocessableEntity, errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	userFormatter := user.FormatUser(loggedInUser, token)
 	response := helper.APIResponse("Successfuly loggedin", "success", http.StatusOK, userFormatter)
 
 	c.JSON(http.StatusOK, response)
