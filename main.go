@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"moyu/auth"
+	"moyu/campaign"
 	"moyu/handler"
 	"moyu/helper"
 	"moyu/user"
@@ -26,19 +27,16 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
+	campaignRepository := campaign.NewRepository(db)
+	campaignService := campaign.NewService(campaignRepository)
+
+	campaigns, err := campaignService.FindCampaigns(3)
+
+	for _, c := range campaigns {
+		fmt.Println(c)
+	}
+
 	userRepository := user.NewRepository(db)
-
-	// campaignRepository := campaign.NewRepository(db)
-
-	// campaigns, err := campaignRepository.FindAll()
-	// campaigns, err := campaignRepository.FindByUserID(1)
-
-	fmt.Println("Debug")
-	// for _, campaign := range campaigns {
-	// 	fmt.Println(campaign.CampaignImages[0].FileName)
-	// }
-	// fmt.Println()
-
 	userService := user.NewService(userRepository)
 	authService := auth.NewService()
 	userHandler := handler.NewUserHandler(userService, authService)
