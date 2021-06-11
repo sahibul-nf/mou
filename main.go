@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"moyu/auth"
 	"moyu/campaign"
@@ -29,12 +28,7 @@ func main() {
 
 	campaignRepository := campaign.NewRepository(db)
 	campaignService := campaign.NewService(campaignRepository)
-
-	campaigns, err := campaignService.FindCampaigns(3)
-
-	for _, c := range campaigns {
-		fmt.Println(c)
-	}
+	campaignHanler := handler.NewCampaignHandler(campaignService)
 
 	userRepository := user.NewRepository(db)
 	userService := user.NewService(userRepository)
@@ -48,6 +42,7 @@ func main() {
 	api.POST("/sessions", userHandler.LoginUser)
 	api.POST("/email_checkers", userHandler.CheckEmailAvaibility)
 	api.POST("/avatars", authMiddleware(authService, userService), userHandler.UploadAvatar)
+	api.GET("/campaigns", campaignHanler.GetCampaigns)
 
 	router.Run()
 }
