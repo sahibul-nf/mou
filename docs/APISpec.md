@@ -205,16 +205,16 @@ Response 🚀
 \
 \</>
 
-## Get List of Campaigns
+## Get Campaign Detail
 
 Request 🔥
 
 - Method : GET
-- Endpoint : `/api/v1/campaigns`
+- Endpoint : `/api/v1/campaigns/{id}`
 - Header :
   - Accept : application/json
 - Params :
-  - user_id
+  - id
 - Body :
 
 ```json
@@ -226,7 +226,7 @@ Response 🚀
 ```json
 {
   "meta": {
-    "message": "Successfuly get list of campaigns",
+    "message": "Successfuly get campaign detail",
     "code": 200,
     "status": "success"
   },

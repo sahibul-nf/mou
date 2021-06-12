@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"moyu/auth"
 	"moyu/campaign"
@@ -27,7 +28,25 @@ func main() {
 	}
 
 	campaignRepository := campaign.NewRepository(db)
+
+	// campaigns, err := campaignRepository.FindByID(2)
+
+	// fmt.Println(campaigns)
+
 	campaignService := campaign.NewService(campaignRepository)
+
+	input := campaign.GetCampaignDetailInput{
+		ID: 1,
+	}
+
+	campaign, err := campaignService.FindCampaign(input)
+
+	if campaign.ID == 0 {
+		fmt.Println("No campaign found on that id")
+	} else {
+		fmt.Println(campaign)
+	}
+
 	campaignHanler := handler.NewCampaignHandler(campaignService)
 
 	userRepository := user.NewRepository(db)

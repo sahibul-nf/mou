@@ -7,6 +7,7 @@ import (
 type Repository interface {
 	FindByUserID(userID int) ([]Campaign, error)
 	FindAll() ([]Campaign, error)
+	FindByID(ID int) (Campaign, error)
 	Save(campaign Campaign) (Campaign, error)
 }
 
@@ -41,7 +42,19 @@ func (r *repository) FindAll() ([]Campaign, error) {
 func (r *repository) FindByUserID(userID int) ([]Campaign, error) {
 	var campaign []Campaign
 
-	err := r.db.Where("id = ?", userID).Preload("CampaignImages", "campaign_images.isPrimary = 1").Find(&campaign).Error
+	err := r.db.Where("user_id = ?", userID).Preload("CampaignImages", "campaign_images.isPrimary = 1").Find(&campaign).Error
+	if err != nil {
+		return campaign, err
+	}
+
+	return campaign, nil
+}
+
+func (r *repository) FindByID(ID int) (Campaign, error) {
+
+	var campaign Campaign
+
+	err := r.db.Where("id = ?", ID).Find(&campaign).Error
 	if err != nil {
 		return campaign, err
 	}
