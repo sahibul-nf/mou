@@ -42,4 +42,25 @@ func (h *campaignHandler) GetCampaign(c *gin.Context) {
 	// handler : mapping id yg di url ke struct input => kirim service, call formatter
 	// service : tangkap input dari struct input, panggil repo
 	// repository : get campaign by id
+
+	var input campaign.GetCampaignDetailInput
+
+	err := c.ShouldBindUri(&input)
+	if err != nil {
+		response := helper.APIResponse("Failed to get campaign detail", "error", http.StatusBadRequest, nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	campaigns, err := h.campaignService.FindCampaign(input)
+	if err != nil {
+		response := helper.APIResponse("Failed to get campaign detail", "error", http.StatusBadRequest, nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	formatter := campaign.FormatDetailCampaign(campaigns)
+
+	response := helper.APIResponse("Successfuly to get campaign detail", "success", http.StatusOK, formatter)
+	c.JSON(http.StatusOK, response)
 }

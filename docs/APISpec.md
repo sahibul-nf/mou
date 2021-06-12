@@ -239,6 +239,7 @@ Response 🚀
     "current_amount": 20000,
     "user_id": 5,
     "description": "Blabla albalb albdlbfiabf",
+    "slug": "campaign-satu",
     "user": {
       "name": "Arini Qisty Adilla",
       "avatar_url": "images/arini.png"
