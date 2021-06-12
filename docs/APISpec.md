@@ -8,7 +8,7 @@ Request 🔥
 - Endpoint : `/api/v1/users`
 - Header :
   - Accept : application/json
-- Params : 
+- Params : None
 - Body :
 
 ```json
@@ -50,7 +50,7 @@ Request 🔥
 - Endpoint : `/api/v1/sessions`
 - Header :
   - Accept : application/json
-- Params : 
+- Params : None
 - Body :
 
 ```json
@@ -91,13 +91,11 @@ Request 🔥
 - Header :
   - Accept : application/json
   - Authorization : Bearer tokentoken
-- Params : 
+- Params : None
 - Body : FORM
 
 ```json
-{
-
-}
+{}
 ```
 
 Response 🚀
@@ -127,8 +125,8 @@ Request 🔥
 - Header :
   - Accept : application/json
   - Authorization : Bearer tokentoken
-- Params : 
-- Body : 
+- Params : None
+- Body :
 
 ```json
 {
@@ -162,14 +160,12 @@ Request 🔥
 - Endpoint : `/api/v1/campaigns`
 - Header :
   - Accept : application/json
-- Params : 
+- Params :
   - user_id
-- Body : 
+- Body :
 
 ```json
-{
-
-}
+{}
 ```
 
 Response 🚀
@@ -203,5 +199,61 @@ Response 🚀
       "user_id": 2
     }
   ]
+}
+```
+
+\
+\</>
+
+## Get List of Campaigns
+
+Request 🔥
+
+- Method : GET
+- Endpoint : `/api/v1/campaigns`
+- Header :
+  - Accept : application/json
+- Params :
+  - user_id
+- Body :
+
+```json
+{}
+```
+
+Response 🚀
+
+```json
+{
+  "meta": {
+    "message": "Successfuly get list of campaigns",
+    "code": 200,
+    "status": "success"
+  },
+  "data": {
+    "id": 1,
+    "name": "Moyu Invesment",
+    "short_description": "blablabla",
+    "image_url": "campaign-images/moyu.png",
+    "goal_amount": 1000000,
+    "current_amount": 20000,
+    "user_id": 5,
+    "description": "Blabla albalb albdlbfiabf",
+    "user": {
+      "name": "Arini Qisty Adilla",
+      "avatar_url": "images/arini.png"
+    },
+    "perks": ["Lorem ipsum dan dadn", "Lorem iand dahjbdaf"],
+    "images": [
+      {
+        "image_url": "campaign-images/image.png",
+        "is_primary": true
+      },
+      {
+        "image_url": "campaign-images/img.png",
+        "is_primary": false
+      }
+    ]
+  }
 }
 ```
