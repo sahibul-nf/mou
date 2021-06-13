@@ -11,3 +11,7 @@
 - jwt-go => https://github.com/dgrijalva/jwt-go
         
         untuk authentication system
+
+- slug => github.com/gosimple/slug
+        
+        untuk membuat slug

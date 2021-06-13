@@ -3,6 +3,7 @@ package handler
 import (
 	"moyu/campaign"
 	"moyu/helper"
+	"moyu/user"
 	"net/http"
 	"strconv"
 
@@ -62,5 +63,42 @@ func (h *campaignHandler) GetCampaign(c *gin.Context) {
 	formatter := campaign.FormatDetailCampaign(campaigns)
 
 	response := helper.APIResponse("Successfuly to get campaign detail", "success", http.StatusOK, formatter)
+	c.JSON(http.StatusOK, response)
+}
+
+func (h *campaignHandler) CreateNewCampaign(c *gin.Context) {
+	// get input user dan mapping ke struct input
+	// cek or get current user via jwt/handler
+	// service passing struct input dan panggil repo + generete struct
+	// repo save to db
+	var input campaign.CreateCampaignInput
+
+	err := c.ShouldBindJSON(&input)
+	if err != nil {
+		errorFormatter := helper.ErrorValidationFormat(err)
+
+		errorMessage := gin.H{"errors": errorFormatter}
+
+		response := helper.APIResponse("Create new campaign is failed", "error", http.StatusUnprocessableEntity, errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	currentUser := c.MustGet("currentUser").(user.User)
+	input.User = currentUser
+
+	newCampaign, err := h.campaignService.CreateCampaign(input)
+	if err != nil {
+		// errorFormatter := helper.ErrorValidationFormat(err)
+		// errorMessage := gin.H{"errors": errorFormatter}
+
+		response := helper.APIResponse("Create new campaign is failed", "error", http.StatusUnprocessableEntity, nil)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	formatter := campaign.FormatCampaign(newCampaign)
+
+	response := helper.APIResponse("Successfuly to create new campaign detail", "success", http.StatusOK, formatter)
 	c.JSON(http.StatusOK, response)
 }
