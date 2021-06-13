@@ -12,6 +12,6 @@
         
         untuk authentication system
 
-- slug => github.com/gosimple/slug
+- slug => https://github.com/gosimple/slug
         
         untuk membuat slug
