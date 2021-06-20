@@ -168,7 +168,7 @@ Request 🔥
 {}
 ```
 
-Response 🚀
+Response All 🚀
 
 ```json
 {
@@ -197,6 +197,49 @@ Response 🚀
       "current_amount": 20000,
       "slug": "cloviel",
       "user_id": 2
+    }
+  ]
+}
+```
+
+Response All by user_id 🚀
+```json
+{
+  "meta": {
+    "message": "Successfuly get list of campaigns",
+    "code": 200,
+    "status": "success"
+  },
+  "data": [
+    {
+      "id": 1,
+      "name": "Moyu Invesment",
+      "short_description": "blablabla",
+      "image_url": "campaign-images/moyu.png",
+      "goal_amount": 1000000,
+      "current_amount": 20000,
+      "slug": "moyu",
+      "user_id": 1
+    },
+    {
+      "id": 6,
+      "name": "Cloviel Campaign",
+      "short_description": "Vivamus magna justo.",
+      "image_url": "",
+      "goal_amount": 7000000,
+      "current_amount": 0,
+      "slug": "cloviel-campaign-1",
+      "user_id": 1
+    },
+    {
+      "id": 8,
+      "name": "Campaign Keren",
+      "short_description": "Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.",
+      "image_url": "",
+      "goal_amount": 40000000,
+      "current_amount": 0,
+      "slug": "campaign-keren-1",
+      "user_id": 1
     }
   ]
 }
