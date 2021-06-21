@@ -1,4 +1,4 @@
-## Library yang digunakan atau ditambah
+## Library yang digunakan
 - gorm => https://gorm.io/docs/index.html   
     - gorm - mysql
     
