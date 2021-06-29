@@ -92,10 +92,12 @@ Request 🔥
   - Accept : application/json
   - Authorization : Bearer tokentoken
 - Params : None
-- Body : FORM
+- Body : form-data
 
-```json
-{}
+```form-data
+{
+  'avatar': file
+}
 ```
 
 Response 🚀
@@ -299,5 +301,134 @@ Response 🚀
       }
     ]
   }
+}
+```
+
+\
+\</>
+
+## Create New Campaign
+
+Request 🔥
+
+- Method : POST
+- Endpoint : `/api/v1/campaigns`
+- Header :
+  - Accept : application/json
+  - Authorization : Bearer tokeneotke
+- Params : None
+- Body :
+
+```json
+{
+    "name": "Campaign Keren",
+    "short_description": "Vestibulum ac diam sit",
+    "description": "Curabitur arcu erat, accumsan id...",
+    "goal_amount": 40000000,
+    "perks": "Quisque velit nisi, pretium ut lacinia in"
+}
+```
+
+Response 🚀
+
+```json
+{
+    "meta": {
+        "message": "Successfuly to create new campaign detail",
+        "code": 200,
+        "status": "success"
+    },
+    "data": {
+        "id": 9,
+        "name": "Baru Campaign Keren",
+        "short_description": "Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.",
+        "image_url": "",
+        "goal_amount": 455000000,
+        "current_amount": 0,
+        "slug": "baru-campaign-keren-1",
+        "user_id": 1
+    }
+}
+```
+
+\
+\</>
+
+## Update Campaign
+
+Request 🔥
+
+- Method : PUT
+- Endpoint : `/api/v1/campaigns/{id}`
+- Header :
+  - Accept : application/json
+  - Authorization : Bearer tokeneotke
+- Params :
+  - id
+- Body :
+
+```json
+{
+    "name": "Campaign Keren",
+    "short_description": "Vestibulum ac diam sit",
+    "description": "Curabitur arcu erat, accumsan id...",
+    "goal_amount": 40000000,
+    "perks": "Quisque velit nisi, pretium ut lacinia in"
+}
+```
+
+Response 🚀
+
+```json
+{
+    "meta": {
+        "message": "Successfuly to updated campaign",
+        "code": 200,
+        "status": "success"
+    },
+    "data": {
+        "ID": 1,
+        "UserID": 1,
+        "Name": "No HACK Campaign Keren Udpdate",
+        "ShortDescription": "Update Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.",
+        "Description": "Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Pellentesque in ipsum id orci porta dapibus. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.",
+        "GoalAmount": 55000000,
+        "CurrentAmount": 20000,
+        "BackerCount": 50,
+        "Perks": "Quisque velit nisi, pretium ut lacinia in, elementum id enim",
+        "Slug": "moyu",
+        "CreatedAt": "2021-06-10T15:38:01+07:00",
+        "UpdatedAt": "2021-06-29T20:57:49.674+07:00",
+        "CampaignImages": [
+            {
+                "ID": 1,
+                "CampaignID": 1,
+                "FileName": "campaign-images/moyu.png",
+                "IsPrimary": 1,
+                "CreatedAt": "2021-06-10T17:01:51+07:00",
+                "UpdatedAt": "2021-06-10T17:01:51+07:00"
+            },
+            {
+                "ID": 2,
+                "CampaignID": 1,
+                "FileName": "campaign-images/moyu-1.png",
+                "IsPrimary": 0,
+                "CreatedAt": "2021-06-10T17:02:32+07:00",
+                "UpdatedAt": "2021-06-10T17:02:32+07:00"
+            }
+        ],
+        "User": {
+            "ID": 1,
+            "Name": "Arini QA",
+            "Occupation": "Bussines Analysis",
+            "Email": "arini@gmail.com",
+            "PasswordHash": "$2a$04$rFH5vvg1wYuvwfHWndTBNe42CaareIqwJ4locKVYnhuOUajeCokCy",
+            "AvatarFileName": "images/1-snf.png",
+            "Role": "user",
+            "Token": "",
+            "CreatedAt": "2021-05-05T17:59:01+07:00",
+            "UpdatedAt": "2021-06-10T13:39:07+07:00"
+        }
+    }
 }
 ```
