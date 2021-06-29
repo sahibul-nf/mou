@@ -133,6 +133,9 @@ func (h *campaignHandler) UpdateCampaign(c *gin.Context) {
 		return
 	}
 
+	currentUser := c.MustGet("currentUser").(user.User)
+	inputData.User = currentUser
+
 	updatedCampaign, err := h.campaignService.UpdateCampaign(inputID, inputData)
 	if err != nil {
 		response := helper.APIResponse("Failed to update campaign", "error", http.StatusUnprocessableEntity, nil)
