@@ -453,7 +453,9 @@ Request 🔥
 
 ```form-data
 {
-    "image": file
+    "campaign_id": int
+    "is_primary": bool
+    "file": file
 }
 ```
 
@@ -461,13 +463,13 @@ Response 🚀
 
 ```json
 {
-  "meta": {
-    "message": "Campaign image successfuly uploaded",
-    "code": 200,
-    "status": "success"
-  },
-  "data": {
-    "is_uploaded": true
-  }
+    "meta": {
+        "message": "Campaign image successfuly uploaded",
+        "code": 200,
+        "status": "success"
+    },
+    "data": {
+        "is_uploaded": true
+    }
 }
 ```
