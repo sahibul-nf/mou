@@ -171,6 +171,10 @@ func (h *campaignHandler) UploadImage(c *gin.Context) {
 		return
 	}
 
+	currentUser := c.MustGet("currentUser").(user.User)
+	input.User = currentUser
+	userID := currentUser.ID
+
 	file, err := c.FormFile("file")
 	if err != nil {
 		data := gin.H{
@@ -181,10 +185,6 @@ func (h *campaignHandler) UploadImage(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
-
-	// dapat currentUser dari middleware
-	currentUser := c.MustGet("currentUser").(user.User)
-	userID := currentUser.ID
 
 	// simpan avatar di folder "images/"
 	path := fmt.Sprintf("campaign-images/%d-%s", userID, file.Filename)
