@@ -432,3 +432,42 @@ Response 🚀
     }
 }
 ```
+
+\
+\</>
+
+## Upload Campaign Images
+
+Request 🔥
+
+- Method : POST
+- Endpoint : `/api/v1/campaign-images`
+- Header :
+  - Accept : application/json
+  - Authorization : Bearer tokeneotke
+- Params :
+  - file
+  - campaign_id
+  - is_primary
+- Body :
+
+```form-data
+{
+    "image": file
+}
+```
+
+Response 🚀
+
+```json
+{
+  "meta": {
+    "message": "Campaign image successfuly uploaded",
+    "code": 200,
+    "status": "success"
+  },
+  "data": {
+    "is_uploaded": true
+  }
+}
+```
