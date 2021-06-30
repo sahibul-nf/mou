@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"moyu/campaign"
 	"moyu/helper"
 	"moyu/user"
@@ -144,5 +145,72 @@ func (h *campaignHandler) UpdateCampaign(c *gin.Context) {
 	}
 
 	response := helper.APIResponse("Successfuly to updated campaign", "success", http.StatusOK, updatedCampaign)
+	c.JSON(http.StatusOK, response)
+}
+
+// handler
+// 1. tangkap input dan passing ke struct input
+// 2. save campaign image ke folder on server
+// service
+// 1. call 2 point on repo
+// repository
+// 1. create or save data image to on table campaign-images
+// 2. ubah is_primary true ke false
+
+func (h *campaignHandler) UploadImage(c *gin.Context) {
+	var input campaign.SaveCampaignImageInput
+
+	err := c.ShouldBindJSON(&input)
+	if err != nil {
+		response := helper.APIResponse("Failed to upload campaign image", "error", http.StatusBadRequest, nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	file, err := c.FormFile("campaign_image")
+	if err != nil {
+		data := gin.H{
+			"is_uploaded": false,
+		}
+
+		response := helper.APIResponse("Failed to upload campaign image", "error", http.StatusBadRequest, data)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// dapat currentUser dari middleware
+	currentUser := c.MustGet("currentUser").(user.User)
+	userID := currentUser.ID
+
+	// simpan avatar di folder "images/"
+	path := fmt.Sprintf("campaign-images/%d-%s", userID, file.Filename)
+
+	err = c.SaveUploadedFile(file, path)
+	if err != nil {
+		data := gin.H{
+			"is_uploaded": false,
+		}
+
+		response := helper.APIResponse("Failed to upload campaign image", "error", http.StatusBadRequest, data)
+
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	_, err = h.campaignService.SaveCampaignImage(input, path)
+	if err != nil {
+		data := gin.H{
+			"is_uploaded": false,
+		}
+
+		response := helper.APIResponse("Failed to upload campaign image", "error", http.StatusBadRequest, data)
+
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	data := gin.H{"is_uploaded": true}
+	response := helper.APIResponse("Campaign image successfuly uploaded", "success", http.StatusOK, data)
+
 	c.JSON(http.StatusOK, response)
 }
