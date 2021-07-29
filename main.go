@@ -6,6 +6,7 @@ import (
 	"moyu/campaign"
 	"moyu/handler"
 	"moyu/helper"
+	"moyu/transaction"
 	"moyu/user"
 	"net/http"
 	"strings"
@@ -26,29 +27,37 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	campaignRepository := campaign.NewRepository(db)
-	campaignService := campaign.NewService(campaignRepository)
-	campaignHanler := handler.NewCampaignHandler(campaignService)
-
 	userRepository := user.NewRepository(db)
 	userService := user.NewService(userRepository)
 	authService := auth.NewService()
 	userHandler := handler.NewUserHandler(userService, authService)
+
+	campaignRepository := campaign.NewRepository(db)
+	campaignService := campaign.NewService(campaignRepository)
+	campaignHandler := handler.NewCampaignHandler(campaignService)
+
+	transactionRepository := transaction.NewRepository(db)
+	transactionService := transaction.NewService(transactionRepository, campaignRepository)
+	transactionHandler := handler.NewTransactionHandler(transactionService)
 
 	router := gin.Default()
 	router.Static("/images", "./images")
 	router.Static("/campaign-images", "./campaign-images")
 
 	api := router.Group("/api/v1")
+
 	api.POST("/users", userHandler.RegisterUser)
 	api.POST("/sessions", userHandler.LoginUser)
 	api.POST("/email_checkers", userHandler.CheckEmailAvaibility)
 	api.POST("/avatars", authMiddleware(authService, userService), userHandler.UploadAvatar)
-	api.POST("/campaigns", authMiddleware(authService, userService), campaignHanler.CreateNewCampaign)
-	api.POST("/campaign-images", authMiddleware(authService, userService), campaignHanler.UploadImage)
-	api.PUT("/campaigns/:id", authMiddleware(authService, userService), campaignHanler.UpdateCampaign)
-	api.GET("/campaigns", campaignHanler.GetCampaigns)
-	api.GET("/campaigns/:id", campaignHanler.GetCampaign)
+
+	api.POST("/campaigns", authMiddleware(authService, userService), campaignHandler.CreateNewCampaign)
+	api.POST("/campaign-images", authMiddleware(authService, userService), campaignHandler.UploadImage)
+	api.PUT("/campaigns/:id", authMiddleware(authService, userService), campaignHandler.UpdateCampaign)
+	api.GET("/campaigns", campaignHandler.GetCampaigns)
+	api.GET("/campaigns/:id", campaignHandler.GetCampaign)
+
+	api.GET("/campaigns/:id/transactions", authMiddleware(authService, userService), transactionHandler.GetCampaignTransactions)
 
 	router.Run()
 }
