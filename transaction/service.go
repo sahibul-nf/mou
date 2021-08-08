@@ -85,7 +85,7 @@ func (s *service) CreateTransaction(input CreateTransactionInput) (Transaction, 
 	}
 
 	paymentTransaction := payment.Transaction{
-		ID:     newTransaction.CampaignID,
+		ID:     newTransaction.ID,
 		Amount: newTransaction.Amount,
 	}
 
