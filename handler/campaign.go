@@ -93,8 +93,8 @@ func (h *campaignHandler) CreateNewCampaign(c *gin.Context) {
 		// errorFormatter := helper.ErrorValidationFormat(err)
 		// errorMessage := gin.H{"errors": errorFormatter}
 
-		response := helper.APIResponse("Create new campaign is failed", "error", http.StatusUnprocessableEntity, nil)
-		c.JSON(http.StatusUnprocessableEntity, response)
+		response := helper.APIResponse("Create new campaign is failed", "error", http.StatusBadRequest, nil)
+		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 

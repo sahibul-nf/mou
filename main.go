@@ -6,6 +6,7 @@ import (
 	"moyu/campaign"
 	"moyu/handler"
 	"moyu/helper"
+	"moyu/payment"
 	"moyu/transaction"
 	"moyu/user"
 	"net/http"
@@ -38,7 +39,8 @@ func main() {
 	campaignHandler := handler.NewCampaignHandler(campaignService)
 
 	transactionRepository := transaction.NewRepository(db)
-	transactionService := transaction.NewService(transactionRepository, campaignRepository)
+	paymentService := payment.NewService()
+	transactionService := transaction.NewService(transactionRepository, campaignRepository, paymentService)
 	transactionHandler := handler.NewTransactionHandler(transactionService)
 
 	router := gin.Default()
@@ -62,6 +64,8 @@ func main() {
 
 	api.GET("/campaigns/:id/transactions", authMiddleware(authService, userService), transactionHandler.GetCampaignTransactions)
 	api.GET("/transactions", authMiddleware(authService, userService), transactionHandler.GetUserTransaction)
+	api.POST("/transactions", authMiddleware(authService, userService), transactionHandler.CreateNewTransaction)
+	api.POST("/trasactions/notify", transactionHandler.GetNotification)
 
 	router.Run()
 }
