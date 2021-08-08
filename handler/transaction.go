@@ -43,7 +43,7 @@ func (h *transactionHanler) GetCampaignTransactions(c *gin.Context) {
 		return
 	}
 
-	transactionsFormatter := transaction.FormatTransactions(transactions)
+	transactionsFormatter := transaction.FormatCampaignTransactions(transactions)
 
 	response := helper.APIResponse("Successfuly to get campaign's transaction", "success", http.StatusOK, transactionsFormatter)
 	c.JSON(http.StatusOK, response)
@@ -101,7 +101,7 @@ func (h *transactionHanler) CreateNewTransaction(c *gin.Context) {
 		return
 	}
 
-	response := helper.APIResponse("Successfuly to create new transaction", "success", http.StatusOK, newTransaction)
+	response := helper.APIResponse("Successfuly to create new transaction", "success", http.StatusOK, transaction.FormatTransaction(newTransaction))
 	c.JSON(http.StatusOK, response)
 }
 
