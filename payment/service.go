@@ -1,8 +1,8 @@
 package payment
 
 import (
-	"moyu/consts"
 	"moyu/user"
+	"os"
 	"strconv"
 
 	"github.com/veritrans/go-midtrans"
@@ -20,9 +20,12 @@ func NewService() *service {
 }
 
 func (s *service) GetPaymentURL(transaction Transaction, user user.User) (string, error) {
+	serverKey := os.Getenv("SERVER_KEY")
+	clientKey := os.Getenv("CLIENT_KEY")
+
 	midclient := midtrans.NewClient()
-	midclient.ServerKey = consts.GetServerKey()
-	midclient.ClientKey = consts.GetClientKey()
+	midclient.ServerKey = serverKey
+	midclient.ClientKey = clientKey
 	midclient.APIEnvType = midtrans.Sandbox
 
 	snapGateway := midtrans.SnapGateway{

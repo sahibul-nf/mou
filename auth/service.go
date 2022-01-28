@@ -2,7 +2,7 @@ package auth
 
 import (
 	"errors"
-	"moyu/consts"
+	"os"
 
 	"github.com/dgrijalva/jwt-go"
 )
@@ -19,13 +19,17 @@ func NewService() *jwtService {
 	return &jwtService{}
 }
 
+var (
+	secretKey = os.Getenv("JWT_SECRET_KEY")
+)
+
 func (s *jwtService) GenerateToken(userID int) (string, error) {
 	claim := jwt.MapClaims{}
 	claim["user_id"] = userID
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
 
-	signedToken, err := token.SignedString(consts.GetSecretKey())
+	signedToken, err := token.SignedString(secretKey)
 
 	if err != nil {
 		return signedToken, err
@@ -43,7 +47,7 @@ func (s *jwtService) ValidateToken(encodedToken string) (*jwt.Token, error) {
 			return nil, errors.New("Invalid token")
 		}
 
-		return []byte(consts.GetSecretKey()), nil
+		return []byte(secretKey), nil
 	})
 
 	if err != nil {

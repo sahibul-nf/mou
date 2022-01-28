@@ -1,3 +1,5 @@
+package main
+
 // contoh cara koneksi database mysql
 // dan membuat entpoint + decode to json
 
