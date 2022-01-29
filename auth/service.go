@@ -29,7 +29,7 @@ func (s *jwtService) GenerateToken(userID int) (string, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
 
-	signedToken, err := token.SignedString(secretKey)
+	signedToken, err := token.SignedString([]byte(secretKey))
 
 	if err != nil {
 		return signedToken, err

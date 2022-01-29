@@ -51,8 +51,8 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 	token, err := h.authService.GenerateToken(newUser.ID)
 
 	if err != nil {
-		response := helper.APIResponse("Register account failed", "error", http.StatusBadGateway, nil)
-		c.JSON(http.StatusBadGateway, response)
+		response := helper.APIResponse("Register account failed (Failed create token)", "error", http.StatusExpectationFailed, token)
+		c.JSON(http.StatusExpectationFailed, response)
 		return
 	}
 
