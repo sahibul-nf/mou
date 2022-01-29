@@ -19,7 +19,7 @@ import (
 
 func main() {
 	db := configs.SetupDatabaseConnection()
-	defer configs.CloseDatabaseConnection(db)
+	// defer configs.CloseDatabaseConnection(db)
 
 	userRepository := user.NewRepository(db)
 	userService := user.NewService(userRepository)
