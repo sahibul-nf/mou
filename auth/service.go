@@ -47,7 +47,7 @@ func (s *jwtService) ValidateToken(encodedToken string) (*jwt.Token, error) {
 			return nil, errors.New("Invalid token")
 		}
 
-		return []byte(secretKey), nil
+		return []byte([]byte(secretKey)), nil
 	})
 
 	if err != nil {
