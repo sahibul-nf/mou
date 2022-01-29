@@ -207,9 +207,9 @@ func (h *campaignHandler) UploadImage(c *gin.Context) {
 			"is_uploaded": false,
 		}
 
-		response := helper.APIResponse("Failed to upload campaign image", "error", http.StatusBadRequest, data)
+		response := helper.APIResponse("Failed to upload campaign image", "error", http.StatusBadGateway, data)
 
-		c.JSON(http.StatusBadRequest, response)
+		c.JSON(http.StatusBadGateway, response)
 		return
 	}
 
