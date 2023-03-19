@@ -23,8 +23,6 @@ func main() {
 		panic(err)
 	}
 
-	gin.SetMode(gin.ReleaseMode)
-
 	db := configs.SetupDatabaseConnection()
 	defer configs.CloseDatabaseConnection(db)
 
@@ -68,7 +66,7 @@ func main() {
 	api.POST("/transactions", authMiddleware(authService, userService), transactionHandler.CreateNewTransaction)
 	api.POST("/transactions/notify", transactionHandler.GetNotification)
 
-	api.GET("/", handler.Index)
+	router.GET("/", handler.Index)
 	router.Run()
 }
 
