@@ -14,9 +14,15 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
+
 	gin.SetMode(gin.ReleaseMode)
 
 	db := configs.SetupDatabaseConnection()
@@ -62,6 +68,7 @@ func main() {
 	api.POST("/transactions", authMiddleware(authService, userService), transactionHandler.CreateNewTransaction)
 	api.POST("/transactions/notify", transactionHandler.GetNotification)
 
+	api.GET("/", handler.Index)
 	router.Run()
 }
 
