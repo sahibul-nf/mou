@@ -1,1 +1,1 @@
-web: moyu
+web: go run main.go
