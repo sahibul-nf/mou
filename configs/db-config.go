@@ -4,6 +4,10 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"moyu/campaign"
+	"moyu/user"
+	"moyu/campaign-images"
+	"moyu/transaction"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
