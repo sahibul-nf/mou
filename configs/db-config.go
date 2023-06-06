@@ -25,7 +25,7 @@ func SetupDatabaseConnection() *gorm.DB {
 		log.Fatalf("Failed to connect database %s", err.Error())
 	}
 
-	// db.AutoMigrate(&campaign.Campaign{}, &user.User{}, &campaign.CampaignImage{}, &transaction.Transaction{})
+	db.AutoMigrate(&campaign.Campaign{}, &user.User{}, &campaign.CampaignImage{}, &transaction.Transaction{})
 	fmt.Println("Successfully to connect database")
 	return db
 }
